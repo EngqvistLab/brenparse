@@ -1,5 +1,5 @@
-# Description of cheminformatics library
-The aim of this package is to easily obtain information the properties of small molecules. **For example usage please refer to the "package_usage.ipynb" file.**
+# Description of brenparse library
+The aim of this package is to parse BRENDA html files to obtain data therein.
 
 
 ## Installation
@@ -24,82 +24,4 @@ The library should now be available for loading in all your python scripts.
 
 
 ## Requirements
-This library relies on several cheminformatics and machine learning libraries
-
-numpy
-
-pandas
-
-matplotlib
-
-PIL
-
-rdkit
-
-cirpy
-
-pubchempy
-
-umap-learn
-
-scikit-learn
-
-
-The installation instructions below assume that you are using a conda environment as provided by Anaconda (https://www.anaconda.com/).
-
-
-Install rdkit
-```
-conda install -c conda-forge rdkit
-```
-
-
-You may also need to install gcc
-```
-conda install libgcc
-```
-
-
-Install CIRpy (here you might again need to use the "whereis" trick as outlined above)
-```
-pip install cirpy
-```
-
-
-Install PubChemPy
-```
-conda install -c bioconda pubchempy
-```
-
-
-Install SciKit-learn
-```
-conda install scikit-learn
-```
-
-
-Install UMAP-learn
-```
-conda install -c conda-forge umap-learn
-```
-
-
-
-## Documentation for cheminformatics packages
-For further readiing regarding the installed cheminformatics packages see:
-
-
-#### RDkit
-https://www.rdkit.org/docs/index.html
-
-https://www.rdkit.org/docs/GettingStartedInPython.html
-
-
-#### CIRpy
-https://cirpy.readthedocs.io/en/latest/guide/gettingstarted.html
-
-https://cirpy.readthedocs.io/en/latest/guide/resolvers.html
-
-
-#### PubChemPy
-https://pubchempy.readthedocs.io/en/latest/
+**Placeholder**
