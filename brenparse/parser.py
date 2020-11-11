@@ -132,7 +132,7 @@ class _ThreeLevelDiv(_BrendaBaseClass):
         #critically these do not contain the comments
         potential = []
         for item in div.find_all("a"):
-            potential.append(item.get_text())
+            potential.append(item.get_text().upper())
         potential = list(filter(None, potential))
 
         #get all div text
@@ -173,7 +173,7 @@ class _ThreeLevelDiv(_BrendaBaseClass):
             organism = self._normalize_name(organism)
 
             #get a list of the uniprot ids, filter out comments and such by matching to the potential ones
-            uniprot_id_list = re.split(',|and', parts[3].replace(' ', '').replace(';', '').replace('-', ''))
+            uniprot_id_list = get_identifiers_from_html(parts[3].upper())
             uniprot_id_list = [s for s in uniprot_id_list if s in potential or get_identifiers_from_html(s) != []]
 
             if uniprot_id_list == [''] or uniprot_id_list == []: # if uid is unknown
@@ -277,7 +277,7 @@ class _FourLevelDiv(_BrendaBaseClass):
         #critically these do not contain the comments
         potential = []
         for item in div.find_all("a"):
-            potential.append(item.get_text())
+            potential.append(item.get_text().upper())
         potential = list(filter(None, potential))
 
         #get all div text
@@ -322,7 +322,7 @@ class _FourLevelDiv(_BrendaBaseClass):
             organism = self._normalize_name(organism)
 
             #get a list of the uniprot ids, filter out comments and such by matching to the potential ones
-            uniprot_id_list = re.split(',|and', parts[4].replace(' ', '').replace(';', '').replace('-', ''))
+            uniprot_id_list = get_identifiers_from_html(parts[4].upper())
             uniprot_id_list = [s for s in uniprot_id_list if s in potential or get_identifiers_from_html(s) != []]
             #print(uniprot_id_list)
 
@@ -432,7 +432,7 @@ class _FiveLevelDiv(_BrendaBaseClass):
         #critically these do not contain the comments
         potential = []
         for item in div.find_all("a"):
-            potential.append(item.get_text())
+            potential.append(item.get_text().upper())
         potential = list(filter(None, potential))
 
         #get all div text
@@ -465,7 +465,7 @@ class _FiveLevelDiv(_BrendaBaseClass):
             organism = self._normalize_name(organism)
 
             #get a list of the uniprot ids, filter out comments and such by matching to the potential ones
-            uniprot_id_list = re.split(',|and', parts[4].replace(' ', '').replace(';', '').replace('-', ''))
+            uniprot_id_list = get_identifiers_from_html(parts[4].upper())
             uniprot_id_list = [s for s in uniprot_id_list if s in potential or get_identifiers_from_html(s) != []]
 
             if uniprot_id_list == [''] or uniprot_id_list == []: # if uid is unknown
@@ -566,7 +566,7 @@ class Organism(_BrendaBaseClass):
         #critically these do not contain the comments
         potential = []
         for item in div.find_all("a"):
-            potential.append(item.get_text())
+            potential.append(item.get_text().upper())
         potential = list(filter(None, potential))
 
         #get all div text
@@ -583,7 +583,7 @@ class Organism(_BrendaBaseClass):
             organism = self._normalize_name(organism)
 
             #get a list of the uniprot ids, filter out comments and such by matching to the potential ones
-            uniprot_id_list = re.split(',|and', parts[4].replace(' ', '').replace(';', '').replace('-', ''))
+            uniprot_id_list = get_identifiers_from_html(parts[4].upper())
             uniprot_id_list = [s for s in uniprot_id_list if (s in potential or get_identifiers_from_html(s) != []) and s != u'']
 
             if uniprot_id_list == ['']: # if uid is unknown
