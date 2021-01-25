@@ -9,8 +9,9 @@ import os
 from os.path import join, exists
 from bs4 import BeautifulSoup
 import re
+from pkg_resources import resource_stream
 
-
+EXAMPLE_PAGE = resource_stream(__name__, 'data/1.1.3.15.html').name
 
 def open_ec(filepath):
     '''
@@ -113,7 +114,7 @@ class _ThreeLevelDiv(_BrendaBaseClass):
     The divs have different "depths", different number of cells before I get to the UNIPROT ID.
     This class can parse divs that has a depth of three.
     "numeric" determines whether the first value in the table is expected to be numeric or not.
-    The expcted structure is "value, organism, uniprot_id"
+    The expected structure is "value, organism, uniprot_id"
     '''
     def __init__(self, soup_instance, numeric):
         _BrendaBaseClass.__init__(self, soup_instance)
@@ -258,7 +259,7 @@ class _FourLevelDiv(_BrendaBaseClass):
     The divs have different "depths", different number of cells before I get to the UNIPROT ID.
     This class can parse divs that has a depth of four.
     "numeric" determines whether the first value in the table is expected to be numeric or not.
-    The expcted structure is "value, information, organism, uniprot_id"
+    The expected structure is "value, information, organism, uniprot_id"
     '''
     def __init__(self, soup_instance, numeric):
         _BrendaBaseClass.__init__(self, soup_instance)
@@ -413,7 +414,7 @@ class _FiveLevelDiv(_BrendaBaseClass):
     The divs have different "depths", different number of cells before I get to the UNIPROT ID.
     This class can parse divs that has a depth of five.
     "numeric" determines whether the first value in the table is expected to be numeric or not.
-    The expcted structure is "value1, value2, information, organism, uniprot_id"
+    The expected structure is "value1, value2, information, organism, uniprot_id"
     '''
     def __init__(self, soup_instance, numeric):
         _BrendaBaseClass.__init__(self, soup_instance)
@@ -817,7 +818,7 @@ class Kcat(_FourLevelDiv):
 
 class KcatDivKm(_FourLevelDiv):
     '''
-    Parsing the TURNOVER NUMBER [1/s] table in BRENDA.
+    Parsing the kcat/KM VALUE [1/mMs-1] table in BRENDA.
     '''
     def __init__(self, soup_instance):
         _FourLevelDiv.__init__(self, soup_instance, numeric=True)
@@ -862,372 +863,3 @@ class NaturalSubstrate(_FiveLevelDiv):
 
 ### other ###
 
-#
-#
-#
-# si = open_ec('/data/Work/projects/sampling-1-1-3-n/data/raw_external/BRENDA_html/html_data/1.1.1.3.html')
-# x = Cofactor(si)
-# data = x.get_data()
-# print(data)
-
-
-
-#
-#
-#
-# def get_data():
-#     mycmd = "wget 'http://brenda-enzymes.org/all_enzymes.php' -U 'Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0' --referer='http://brenda-enzymes.org' -O %s --no-clobber" % (join(RAW_FOLDER, 'all_enzymes.php.html'))
-#     os.system(mycmd)
-#
-#
-#     #open the list of EC numbers and find all
-#     filepath = join(RAW_FOLDER, 'all_enzymes.php.html')
-#     with open(filepath, 'r') as f:
-#         data = f.read()
-#
-#     all_ec = set(re.findall('[0-9]+\.[0-9]+\.[0-9]+\.[0-9a-zA-Z]+', data))
-#
-#     total = len(list(all_ec))
-#     print('Number of EC: %s' % total)
-#
-#     #process each of these
-#     counter = 0
-#     for ec in sorted(list(all_ec)):
-#
-#         if counter % 500 == 0:
-#             print('%s of %s processed' % (counter, total))
-#         counter +=1
-#
-#         # Skip files that exist
-#         if isfile(join(RAW_FOLDER, 'sequences', '%s.csv' % ec)):
-#             if os.path.getsize(join(RAW_FOLDER, 'sequences', '%s.csv' % ec)) > 2:
-#                 continue
-#         # elif isfile(join(RAW_FOLDER, 'sequences', '%s.fasta' % ec)):
-#         #     continue
-#
-#         ##download html file if it does not exist
-#         mycmd = "wget 'http://brenda-enzymes.org/enzyme.php?ecno=%s' -U 'Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0' --referer='https://www.brenda-enzymes.org/ecexplorer.php?browser=1&f[nodes]=21,1&f[action]=open&f[change]=22' -O %s " % (ec, join(RAW_FOLDER, 'html', '%s.html' % ec))
-#         os.system(mycmd)
-#
-#         #download sequences for ec number, if the file does not exist
-#         mycmd = "wget 'https://www.brenda-enzymes.org/sequences.php?download=allcsv&ec=%s' -U 'Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0' --referer='https://www.brenda-enzymes.org/ecexplorer.php?browser=1&f[nodes]=21,1&f[action]=open&f[change]=22' -O %s " % (ec, join(RAW_FOLDER, 'sequences', '%s.csv' % ec))
-#         os.system(mycmd)
-#
-#         time.sleep(1)
-#
-#
-# def make_fasta():
-#     '''Convert BENDA csv file to FASTA'''
-#
-#     counter = 0
-#     files = os.listdir(join(RAW_FOLDER, 'sequences'))
-#     for fi in files:
-#
-#         # skip non-csv files
-#         if not fi.endswith('.csv'):
-#             continue
-#
-#         if counter % 500 == 0:
-#             print('%s processed' % (counter))
-#         counter +=1
-#
-#         infile = join(RAW_FOLDER, 'sequences', fi)
-#         outfile = join(RAW_FOLDER, 'sequences', fi.replace('.csv', '.fasta'))
-#
-#         # skip files that have been converted
-#         if isfile(outfile):
-#             if os.path.getsize(outfile) > 2:
-#                 continue
-#
-#         with open(infile, 'r' ,encoding='ISO-8859-1') as f:
-#             firstline = f.readline()
-#
-#             #there are four types of document formats expected
-#             if firstline.strip() == '<!DOCTYPE html>':
-#                 # make file but keep it empty
-#                 with open(outfile, 'w') as fo:
-#                     fo.write('\n')
-#                 continue
-#
-#             elif len(firstline.split('\t')) == 7 and len(firstline.split('\t')[2].split('.')) == 4:
-#                 line = firstline
-#
-#             elif firstline.strip() == '#This file is tab stop separated':
-#                 header_line = f.readline() # get rid of header
-#
-#                 # make sure header is ok. I.e. skip files where the third line is not the header
-#                 if not header_line.startswith('Accession_Code'):
-#                     print(fi)
-#                     print(header_line)
-#                 line = f.readline()
-#
-#             elif firstline.startswith('Accession_Code'):
-#                 line = f.readline()
-#
-#             else:
-#                 print(fi)
-#                 print(firstline)
-#                 continue
-#
-#             with open(outfile, 'w', encoding='utf-8') as fo:
-#                 #write data to fasta file
-#                 header = ';'.join(line.split('\t')[:-1])
-#                 seq = line.split('\t')[-1].strip()
-#                 fo.write('>%s\n%s\n' % (header, seq))
-#                 lastline = line
-#
-#                 for line in f:
-#                     line = line.encode('utf-8', 'xmlcharrefreplace').decode('utf-8')
-#
-#                     #skip lines that are exactly the same (there seems to be some duplications)
-#                     if lastline == line:
-#                         continue
-#
-#                     #write data to fasta file
-#                     header = ';'.join(line.split('\t')[:-1])
-#                     seq = line.split('\t')[-1].strip()
-#                     fo.write('>%s\n%s\n' % (header, seq))
-#                     lastline = line
-#
-# def compress_data():
-#     # compress all .html files, remove the uncompressed ones
-#     mycmd = "zip -jm %s %s" % (join(RAW_FOLDER, 'html', 'html_data.zip'), join(RAW_FOLDER, 'html', '*'))
-#     os.system(mycmd)
-#
-#     # compress all .csv files, remove uncompressed ones
-#     mycmd = "zip -jm %s %s" % (join(RAW_FOLDER, 'sequences', 'sequence_data_csv.zip'), join(RAW_FOLDER, 'sequences', '*.csv'))
-#     os.system(mycmd)
-#
-#     # compress all .fasta files, remove the uncompressed ones
-#     mycmd = "zip -jm %s %s" % (join(RAW_FOLDER, 'sequences', 'sequence_data.zip'), join(RAW_FOLDER, 'sequences', '*.fasta'))
-#     os.system(mycmd)
-#
-
-
-
-
-
-
-
-
-#
-# def get_all_orgs(self):
-#     '''
-#     Get all organism data from BRENDA
-#     '''
-#
-#     #open the list of EC numbers and find all
-#     filepath = join(RAW_FOLDER, 'all_enzymes.php.html')
-#     with open(filepath, 'r') as f:
-#         data = f.read()
-#     all_ec = set(re.findall('[0-9]+\.[0-9]+\.[0-9]+\.[0-9a-zA-Z]+', data))
-#
-#     total = len(list(all_ec))
-#     print('Number of EC: %s' % total)
-#
-#     #process each of these
-#     data = {}
-#     counter = 0
-#     for ec in sorted(list(all_ec)):
-#         if ec.startswith('1.1.1'):
-#             print(ec)
-#             counter +=1
-#             if counter % 1000 == 0:
-#                 print('%s of %s processed' % (counter, total))
-#             div_data = get_organism_divs_from_data(ec)
-#             #if div_data is not None:
-#             data[ec] = div_data
-#
-#
-#     #count how many
-#     with open('test.tsv', 'w') as f:
-#         f.write('ec\tuniprot_identifiers\n')
-#
-#         all_uid = []
-#         for ec in sorted(data.keys()):
-#             ec_uids = []
-#
-#             if data[ec] is None:
-#                 f.write('%s\t%s\n' % (ec, 0))
-#             else:
-#                 for org in data[ec].keys():
-#                     if data[ec][org] is not None:
-#                         all_uid.extend(data[ec][org])
-#
-#                         ec_uids.extend(data[ec][org])
-#                 f.write('%s\t%s\n' % (ec, len(set(ec_uids))))
-#         print(len(set(all_uid)))
-#
-#
-#
-# def get_all_uniprot_id():
-#     '''
-#     Use regex to get all the uniprot identifiers.
-#     Intended as an alternate method that does not depend on parsing the html.
-#     '''
-#
-#     #open the list of EC numbers and find all
-#     filepath = join(RAW_FOLDER, 'all_enzymes.php.html')
-#     with open(filepath, 'r') as f:
-#         data = f.read()
-#     all_ec = set(re.findall('[0-9]+\.[0-9]+\.[0-9]+\.[0-9a-zA-Z]+', data))
-#
-#     total = len(list(all_ec))
-#     print('Number of EC: %s' % total)
-#
-#     #process each of these
-#     data = {}
-#     counter = 0
-#     for ec in sorted(list(all_ec)):
-#         #if ec.startswith('1.1.3'):
-#         print(ec)
-#         html_doc = join(RAW_FOLDER, '%s.html' % ec)
-#
-#         #read the html page
-#         with open(html_doc, 'r') as f:
-#             document = f.read()
-#
-#         #http://www.uniprot.org/help/accession_numbers
-#         m = re.findall('>([OPQ][0-9](?:[A-Z0-9]){3}[0-9])<|>([A-NR-Z][0-9](?:[A-Z][A-Z0-9]{2}[0-9]){1,2})<', document)
-#         data[ec] = m
-#
-#     #count how many
-#     with open('test.tsv', 'w') as f:
-#         f.write('ec\tuniprot_identifiers\n')
-#
-#         all_uid = []
-#         for ec in sorted(data.keys()):
-#             if data[ec] == []:
-#                 f.write('%s\t%s\n' % (ec, 0))
-#             else:
-#                 all_uid.extend(data[ec])
-#                 f.write('%s\t%s\n' % (ec, len(set(data[ec]))))
-#     print(len(set(all_uid)))
-#
-#
-# get_all_uniprot_id()
-#
-#
-# def get_all(folder_path, table_class):
-#     '''Get all temperature data from BRENDA'''
-#
-#     #open the list of EC numbers and find all
-#     filepath = join(folder_path, 'all_enzymes.php.html')
-#     with open(filepath, 'r') as f:
-#         data = f.read()
-#     all_ec = set(re.findall('[0-9]+\.[0-9]+\.[0-9]+\.[0-9a-zA-Z]+', data))
-#
-#     total = len(list(all_ec))
-#     print('Number of EC: %s' % total)
-#
-#     #process each of these
-#     data = {}
-#     counter = 0
-#     for ec in list(all_ec):
-#         counter +=1
-#         if counter % 1000 == 0:
-#             print('%s of %s processed' % (counter, total))
-#
-#         soup = open_ec(filepath)
-#
-#         brenda_obj = table_class(soup)
-#
-#         data[ec] = brenda_obj.get_data()
-#
-#     return data
-    #
-    # #save as shelve
-    # sh = shelve.open(join(FINAL_FOLDER, '1_temperature_optimum_data.db'))
-    # sh['data'] = data
-    # sh.close()
-#
-#
-# def make_flatfile():
-#     '''Make a tab-delimited flatfile of data'''
-#     sh = shelve.open(join(FINAL_FOLDER, '1_temperature_optimum_data.db'))
-#     data = sh['data']
-#     sh.close()
-#
-#     with open(join(FINAL_FOLDER, '1_temperature_optimum_data.tsv'), 'w') as f:
-#         f.write('ec\torganism\ttemperature\tuniprot_id\n')
-#         for ec in sorted(data.keys()):
-#             if data[ec] is None:
-#                 continue
-#             for org in sorted(data[ec]):
-#                 for uniprot_id in sorted(data[ec][org]):
-#                     temps = data[ec][org][uniprot_id]
-#                     temperature = int(round(sum(temps)/len(temps)))
-#                     f.write('%s\t%s\t%s\t%s\n' % (ec, org.lower().replace(' ', '_'), temperature, uniprot_id))
-#
-#
-#
-# def get_sequences():
-#     '''For each uniprot_id, get the sequence'''
-#     sh = shelve.open(join(FINAL_FOLDER, '1_temperature_optimum_data.db'))
-#     data = sh['data']
-#     sh.close()
-#
-#     for ec in sorted(data.keys()):
-#         if data[ec] is None:
-#             continue
-#         for org in sorted(data[ec]):
-#             for uniprot_id in sorted(data[ec][org]):
-#                 url = 'http://www.uniprot.org/uniprot/%s.fasta' % uniprot_id
-#                 dlfile(folder=join(DATA_BASE_FOLDER, 'raw_external/', 'uniprot_records'), filename='%s.fasta' % uniprot_id, url=url)
-#
-#
-#
-# def make_fasta_files():
-#     '''Combine uniprot records into fasta files. Annotate with temperature'''
-#     sh = shelve.open(join(FINAL_FOLDER, '1_temperature_optimum_data.db'))
-#     data = sh['data']
-#     sh.close()
-#
-#     orgs_in_training_set = []
-#     all_orgs = []
-#
-#     #for each record in folder
-#     folder=join(DATA_BASE_FOLDER, 'raw_external/', 'uniprot_records')
-#     all_files = os.listdir(folder)
-#     for fi in sorted(all_files):
-#         with open(join(folder, fi), 'r') as f:
-#             header = f.readline()
-#             seq = f.read()
-#             uniprot_id = fi.replace('.fasta', '')
-#
-#             #parse out orgname
-#             org = re.search('OS=[\[\]a-zA-Z]+\s[a-zA-Z]+', header).group(0)
-#             org = org.replace('OS=', '').replace('[', '').replace(']', '')
-#
-#             #pair with its measured temperature
-#             for ec in data.keys():
-#                 if data[ec] is None:
-#                     continue
-#                 if data[ec].get(org, {}).get(uniprot_id) is not None:
-#                     temps = data[ec][org][uniprot_id]
-#                     temperature = int(round(sum(temps)/len(temps)))
-#                     break
-#
-#             #craft the output
-#             out_record = '>%s;%s\n%s' % (org, temperature, seq)
-#
-#             #check whether this organism is in my growth data
-#             if org_temp_new.in_data(org) is True:
-#                 #make one fasta file with organisms that were in my dataset
-#                 orgs_in_training_set.append(out_record)
-#
-#             #make one fasta file with all records
-#             all_orgs.append(out_record)
-#
-#
-#     with open(join(FINAL_FOLDER, 'orgs_in_training_set.fasta'), 'w') as f:
-#         f.write('\n'.join(orgs_in_training_set))
-#
-#     with open(join(FINAL_FOLDER, 'all_orgs.fasta'), 'w') as f:
-#         f.write('\n'.join(all_orgs))
-
-
-#get_all()
-#make_flatfile()
-#get_sequences()
-#make_fasta_files()
