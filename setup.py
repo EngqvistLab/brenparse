@@ -3,7 +3,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #LICENSE:
 #
-#cheminformatics is free software; you can redistribute it and/or modify
+#brenparse is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation; either version 3 of the License, or
 #(at your option) any later version.
@@ -33,17 +33,17 @@ setup(
     long_description=long_description,
     version=version,                          # MAJOR.MINOR.PATCH
 	author='Martin Engqvist',
-	author_email='martin_engqvist@chalmers.se',
+	author_email='martin.engqvist@gmail.com',
 	url='https://github.com/EngqvistLab/brenparse',
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']), #find folders containing scripts, exclude irrelevant ones
-    install_requires=[],
+    install_requires=['beautifulsoup4>=4.9.3'],
 	license='GPLv3+',
 	classifiers=[
 	# How mature is this project? Common values are
 	#   3 - Alpha
 	#   4 - Beta
 	#   5 - Production/Stable
-	'Development Status :: 3 - Alpha',
+	'Development Status :: 5 - Production/Stable',
 
 	# Indicate who your project is intended for
 	'Intended Audience :: Science/Research',
