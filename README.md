@@ -40,7 +40,7 @@ The BRENDA database is parsed one html page at a time, with each page holding in
 
 ```python3
 >>> from brenparse import parser
->>> filepath = prarser.EXAMPLE_PAGE
+>>> filepath = parser.EXAMPLE_PAGE
 >>> soup_obj = parser.open_ec(filepath)
 ```
 
@@ -120,7 +120,7 @@ A full list of the four-level tables:
 
 
 ### Five-level tables
-The five-level tables have the structure: value1, value2, comment, organism, uniprot_id. The value is always text. The data is returned as a dictionary of organism names as keys, holding nested dictionaries as values. The structure is dictionary[organism][uniprot_id]["sub"/"prod"] where the last level stands for "substrate" or "product" and holds lists containing the text strings. By default only records with UniProt identifiers are returned (i.e. leaving out records without identifiers)
+The five-level tables have the structure: value1, value2, reaction_diagram, organism, uniprot_id. The value is always text. The data is returned as a dictionary of organism names as keys, holding nested dictionaries as values. The structure is dictionary[organism][uniprot_id]["sub"/"prod"] where the last level stands for "substrate" or "product" and holds lists containing the text strings. By default only records with UniProt identifiers are returned (i.e. leaving out records without identifiers)
 
 ```python3
 >>> parser.NaturalSubstrate(soup_obj).get_data() # Parsing the NATURAL SUBSTRATE table in BRENDA

@@ -25,7 +25,7 @@ if sys.version_info[0] == 2:
 
 
 long_description = 'The aim of this package is to parse out data from the BRENDA database html files.'
-version = '0.1.0'
+version = '0.1.1'
 
 setup(
 	name='brenparse',    # This is the name of your PyPI-package.
