@@ -1,12 +1,12 @@
-# Description of brenparse library
+# Description of the brenparse library
 Much of the data in the BRENDA database (https://www.brenda-enzymes.org/) is available through their SOAP client, but not all. The aim of this package is address this issue by parsing BRENDA html files to obtain the data therein. One needs to first download the html pages that one wishes to parse and this library can then be used to extract data.
 
 
 ## Installation
 Download repository and unzip (alternatively fork or clone), cd to the project base folder and execute the command below:
 
-```
-pip3 install -e .
+```bash
+>>> pip3 install -e .
 ```
 
 __If using an anaconda environment__ you may have to first locate the anaconda pip using whereis.
