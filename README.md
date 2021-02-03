@@ -3,11 +3,7 @@ Much of the data in the BRENDA database (https://www.brenda-enzymes.org/) is ava
 
 
 ## Installation
-Download repository and unzip (alternatively fork or clone), cd to the project base folder and execute the command below:
-
-```bash
->>> pip3 install -e .
-```
+Download repository and unzip (alternatively fork or clone).
 
 __If using an anaconda environment__ you may have to first locate the anaconda pip using whereis.
 ```bash
