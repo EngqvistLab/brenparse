@@ -13,7 +13,7 @@ __If using an anaconda environment__ you may have to first locate the anaconda p
 Locate the appropriate file path (the one that has anaconda and the correct environment in the filepath) and run the modified command. For example:
 
 ```bash
->>> /home/username/anaconda3/envs/py37/bin/pip install -e .
+>>> /home/username/anaconda3/envs/env_name/bin/pip install -e .
 ```
 
 __If _not_ using an anaconda environment__ simply install using pip:

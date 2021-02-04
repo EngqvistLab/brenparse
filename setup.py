@@ -30,13 +30,14 @@ version = '0.1.1'
 setup(
 	name='brenparse',    # This is the name of your PyPI-package.
 	description='A set of scripts to parse BRENDA html files.',       #package description
-    long_description=long_description,
-    version=version,                          # MAJOR.MINOR.PATCH
+        long_description=long_description,
+        version=version,                          # MAJOR.MINOR.PATCH
 	author='Martin Engqvist',
 	author_email='martin.engqvist@gmail.com',
 	url='https://github.com/EngqvistLab/brenparse',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*']), #find folders containing scripts, exclude irrelevant ones
-    install_requires=['beautifulsoup4>=4.9.3'],
+        packages=find_packages(exclude=['contrib', 'docs', 'tests*']), #find folders containing scripts, exclude irrelevant ones
+        install_requires=['beautifulsoup4>=4.9.3'],
+        include_package_data=True,
 	license='GPLv3+',
 	classifiers=[
 	# How mature is this project? Common values are
